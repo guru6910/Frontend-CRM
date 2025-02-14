@@ -14,10 +14,11 @@ pipeline {
         }
         stage('deploy'){
             steps {
-                sh '''
-                    aws s3 cp --recursive dist/angular-frontend/ s3://cbz-frontend-b18-2/
-                '''
+                withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'aws-cred', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                sh 'aws s3 cp --recursive /var/lib/jenkins/workspace/FRONTEND/dist/angular-frontend s3://cbz-frontend-b18/'
+                }
             }
         }
+
     }
 }
